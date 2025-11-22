@@ -1,0 +1,16 @@
+# OpenAI Python SDK
+openai>=1.0.0
+
+# Web Framework
+flask>=3.0.0
+
+# Optional: For environment variable management
+python-dotenv>=1.0.0
+
+# Data validation
+pydantic>=2.0.0
+
+# Ollama python client (if available) and other utilities
+ollama
+streamlit
+requests

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 智能助手平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🤖</span>
+                <span class="logo-text">AI 智能助手</span>
+                <span id="service-badge" class="service-badge" style="margin-left:12px;padding:4px 8px;border-radius:6px;background:#eee;font-size:12px;display:inline-block;">Backend: unknown</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">首頁</a>
+                <a href="#services" class="nav-link">服務</a>
+                <a href="#about" class="nav-link">關於</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">AI 智能助手平台</h1>
+            <p class="hero-subtitle">提供翻譯、新聞分析、故事創作等多項 AI 服務</p>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="ask">💬 一般問答</button>
+                <button class="tab-btn" data-tab="translate">🌐 智能翻譯</button>
+                <button class="tab-btn" data-tab="news">📰 新聞分析</button>
+                <button class="tab-btn" data-tab="story">📖 故事創作</button>
+                <button class="tab-btn" data-tab="dispatch">🎯 智能分派</button>
+            </div>
+
+            <!-- 一般問答 Tab -->
+            <div class="tab-content active" id="ask-tab">
+                <div class="service-card">
+                    <h2>💬 一般問答服務</h2>
+                    <p class="service-desc">向 AI 助手提出任何問題，獲得智能回答</p>
+                    
+                    <div class="form-group">
+                        <label for="ask-input">您的問題：</label>
+                        <textarea id="ask-input" placeholder="例如：什麼是人工智慧？" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ask-model">選擇模型：</label>
+                        <select id="ask-model">
+                            <option value="gpt-5-nano">GPT-5 Nano</option>
+                            <option value="gpt-4">GPT-4</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="handleAsk()">
+                        <span class="btn-text">提交問題</span>
+                        <span class="btn-loading" style="display: none;">處理中...</span>
+                    </button>
+                    
+                    <div id="ask-result" class="result-box" style="display: none;">
+                        <h3>回答結果：</h3>
+                        <div id="ask-output"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能翻譯 Tab -->
+            <div class="tab-content" id="translate-tab">
+                <div class="service-card">
+                    <h2>🌐 智能翻譯服務</h2>
+                    <p class="service-desc">中英文雙向翻譯，自動識別語言</p>
+                    
+                    <div class="form-group">
+                        <label for="translate-input">待翻譯文字：</label>
+                        <textarea id="translate-input" placeholder="輸入中文或英文..." rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="translate-model">選擇模型：</label>
+                        <select id="translate-model">
+                            <option value="gpt-5-nano">GPT-5 Nano</option>
+                            <option value="gpt-4">GPT-4</option>
+                            <option value="gemma3:1b">Gemma3:1b (Ollama)</option>
+                            <option value="gemma3:12b">Gemma3:12b (Ollama)</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="handleTranslate()">
+                        <span class="btn-text">開始翻譯</span>
+                        <span class="btn-loading" style="display: none;">翻譯中...</span>
+                    </button>
+                    
+                    <div id="translate-result" class="result-box" style="display: none;">
+                        <div class="translation-result">
+                            <div class="translation-section">
+                                <h3>原文：</h3>
+                                <div id="translate-original"></div>
+                            </div>
+                            <div class="translation-arrow">→</div>
+                            <div class="translation-section">
+                                <h3>譯文：</h3>
+                                <div id="translate-output"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 新聞分析 Tab -->
+            <div class="tab-content" id="news-tab">
+                <div class="service-card">
+                    <h2>📰 新聞 5W1H 分析</h2>
+                    <p class="service-desc">自動分析新聞內容，提取關鍵資訊</p>
+                    
+                    <div class="form-group">
+                        <label for="news-input">新聞內容：</label>
+                        <textarea id="news-input" placeholder="貼上新聞內容..." rows="6"></textarea>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="handleNewsAnalysis()">
+                        <span class="btn-text">分析新聞</span>
+                        <span class="btn-loading" style="display: none;">分析中...</span>
+                    </button>
+                    <div class="form-group" style="margin-top:10px;">
+                        <label for="news-model">選擇模型：</label>
+                        <select id="news-model">
+                            <option value="gpt-4o-2024-08-06">gpt-4o-2024-08-06</option>
+                            <option value="gpt-5-nano">GPT-5 Nano</option>
+                            <option value="gemma3:1b">Gemma3:1b (Ollama)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="news-result" class="result-box" style="display: none;">
+                        <h3>5W1H 分析結果：</h3>
+                        <div class="news-analysis">
+                            <div class="analysis-item">
+                                <strong>👤 Who (誰)：</strong>
+                                <span id="news-who"></span>
+                            </div>
+                            <div class="analysis-item">
+                                <strong>📋 What (什麼事)：</strong>
+                                <span id="news-what"></span>
+                            </div>
+                            <div class="analysis-item">
+                                <strong>⏰ When (何時)：</strong>
+                                <span id="news-when"></span>
+                            </div>
+                            <div class="analysis-item">
+                                <strong>📍 Where (何地)：</strong>
+                                <span id="news-where"></span>
+                            </div>
+                            <div class="analysis-item">
+                                <strong>❓ Why (為何)：</strong>
+                                <span id="news-why"></span>
+                            </div>
+                            <div class="analysis-item">
+                                <strong>⚙️ How (如何)：</strong>
+                                <span id="news-how"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 故事創作 Tab -->
+            <div class="tab-content" id="story-tab">
+                <div class="service-card">
+                    <h2>📖 AI 故事創作</h2>
+                    <p class="service-desc">根據主題創作獨特的床邊故事</p>
+                    
+                    <div class="form-group">
+                        <label for="story-topic">故事主題：</label>
+                        <input type="text" id="story-topic" placeholder="例如：友誼、勇氣、冒險...">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="story-words">字數：</label>
+                            <input type="number" id="story-words" value="100" min="50" max="500">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="story-style">寫作風格：</label>
+                            <select id="story-style">
+                                <option value="Tell the story like 村上春樹">村上春樹風格</option>
+                                <option value="Tell the story in a fairy tale style">童話風格</option>
+                                <option value="Tell the story in an adventure style">冒險風格</option>
+                                <option value="Tell the story in a poetic style">詩意風格</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="story-model">選擇模型：</label>
+                            <select id="story-model">
+                                <option value="gpt-5-nano">GPT-5 Nano</option>
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="gemma3:1b">Gemma3:1b (Ollama)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="handleStoryCreation()">
+                        <span class="btn-text">創作故事</span>
+                        <span class="btn-loading" style="display: none;">創作中...</span>
+                    </button>
+                    
+                    <div id="story-result" class="result-box" style="display: none;">
+                        <h3>✨ 您的故事：</h3>
+                        <div id="story-output" class="story-text"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能分派 Tab -->
+            <div class="tab-content" id="dispatch-tab">
+                <div class="service-card">
+                    <h2>🎯 智能任務分派</h2>
+                    <p class="service-desc">自動判斷您的需求，智能分派到對應的 AI 服務</p>
+                    
+                    <div class="form-group">
+                        <label for="dispatch-input">您的需求：</label>
+                        <textarea id="dispatch-input" placeholder="例如：請幫我翻譯 Hello World、分析這篇新聞、寫一個關於友誼的故事..." rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dispatch-model">選擇模型：</label>
+                        <select id="dispatch-model">
+                            <option value="gpt-5-nano">GPT-5 Nano</option>
+                            <option value="gpt-4">GPT-4</option>
+                            <option value="gpt-4o-2024-08-06">gpt-4o-2024-08-06</option>
+                            <option value="gemma3:1b">Gemma3:1b (Ollama)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="example-requests">
+                        <p><strong>範例請求：</strong></p>
+                        <button class="example-btn" onclick="setDispatchExample('請幫我翻譯 Hello World')">翻譯範例</button>
+                        <button class="example-btn" onclick="setDispatchExample('什麼是機器學習？')">問答範例</button>
+                        <button class="example-btn" onclick="setDispatchExample('寫一個關於友誼的故事')">故事範例</button>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="handleDispatch()">
+                        <span class="btn-text">智能分派</span>
+                        <span class="btn-loading" style="display: none;">處理中...</span>
+                    </button>
+                    
+                    <div id="dispatch-result" class="result-box" style="display: none;">
+                        <div class="dispatch-info">
+                            <strong>任務類型：</strong>
+                            <span id="dispatch-type" class="task-type-badge"></span>
+                        </div>
+                        <h3>處理結果：</h3>
+                        <div id="dispatch-output"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 AI 智能助手平台 | Powered by OpenAI</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

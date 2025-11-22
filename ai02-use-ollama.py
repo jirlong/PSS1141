@@ -1,6 +1,6 @@
 import ollama
 
-def ask_question(question, model='gemma3:12b'):
+def ask_question(question, model='gemma3:1b'):
     """
     General purpose function to ask a question and get a response from Ollama.
     
@@ -24,7 +24,7 @@ def ask_question(question, model='gemma3:12b'):
         return None
 
 
-def translator(text, model='gemma3:12b'):
+def translator(text, model='gemma3:1b'):
     """
     Translate text between Traditional Chinese and English automatically.
     If input is Traditional Chinese, translate to English. If input is English, translate to Traditional Chinese.
@@ -60,7 +60,7 @@ def translator(text, model='gemma3:12b'):
         return None
 
 
-def research_topic(topic, model='gemma3:12b', instructions="You are a research assistant. Read the user's topic and return a concise summary of recent and reliable information in one paragraph. Include sources when relevant.", input_template="Can you help me research {topic} and summarize the latest findings?"):
+def research_topic(topic, model='gemma3:1b', instructions="You are a research assistant. Read the user's topic and return a concise summary of recent and reliable information in one paragraph. Include sources when relevant.", input_template="Can you help me research {topic} and summarize the latest findings?"):
     """
     Research a topic and provide a summary.
     
