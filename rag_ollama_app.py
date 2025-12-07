@@ -13,7 +13,7 @@ from langchain_core.prompts import ChatPromptTemplate
 # Configuration
 DATA_DIR = "rag_data"
 DB_PATH = "rag_data/chroma_db"
-MODEL_NAME = "gemma3:12b"
+MODEL_NAME = "gemma3:4b"
 EMBEDDING_MODEL = "all-minilm"
 
 class RAGOllamaApp:
@@ -265,7 +265,25 @@ def main():
             # Standard RAG Query
             with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
-                    result = app.query(prompt)
+                    # Get history (last 3 turns, excluding current prompt which is already appended but we want to pass history separately or handle it)
+                    # Actually, we haven't appended the current prompt to history passed to LLM yet in the backend logic I wrote?
+                    # Wait, in backend I did: messages.append(("human", "{input}"))
+                    # So history should NOT include the current prompt.
+                    
+                    # st.session_state.messages already has the current prompt appended at line 227.
+                    # So we want messages[:-1] and then take the last few.
+                    
+                    history_messages = st.session_state.messages[:-1]
+                    # Filter for last 3 turns (user + assistant pairs, so last 6 messages max)
+                    # The user asked for "at least 3 rounds", so let's take last 6 messages.
+                    recent_history = history_messages[-6:]
+                    
+                    formatted_history = []
+                    for msg in recent_history:
+                        role = "human" if msg["role"] == "user" else "ai"
+                        formatted_history.append((role, msg["content"]))
+
+                    result = app.query(prompt, history=formatted_history)
                     answer = result["answer"]
                     sources = result["sources"]
                     

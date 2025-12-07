@@ -10,7 +10,12 @@ Visit quick start guide at: https://platform.openai.com/docs/quickstart
 """
 
 
-OPENAI_API_KEY="your-openai-api-key-here"  # Replace with your actual OpenAI API key
+
+
+# get api key from environment variable
+# OPENAI_API_KEY="your-openai-api-key-here"  # Replace with your actual OpenAI API key
+import os 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # OR, get from environment variable if set
 
 from openai import OpenAI
 client = OpenAI(api_key=OPENAI_API_KEY)

@@ -86,7 +86,8 @@ def research_topic(topic, model='gemma3:1b', instructions="You are a research as
         return None
 
 
-def main():
+if __name__ == "__main__":
+    
     # Example 1: Simple question
     print("== Example 1: ask_question ==")
     answer = ask_question('日本的首都在哪裡（簡答）？')
@@ -105,7 +106,3 @@ def main():
     translator("Hello, how are you today?")
     print("\nTranslating Chinese to English:")
     translator("你好,今天天氣很好")
-
-
-if __name__ == "__main__":
-    main()

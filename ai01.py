@@ -2,7 +2,12 @@ from openai import OpenAI
 from pydantic import BaseModel
 import json
 
-OPENAI_API_KEY = ""
+# OPENAI_API_KEY = "" # insert your api key here, or set environment variable OPENAI_API_KEY
+
+# get api key from environment variable
+import os 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # OR, get from environment variable if set
+
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 

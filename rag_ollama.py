@@ -132,7 +132,7 @@ class RAGOllamaApp:
         response = llm.invoke(prompt)
         return response.content
 
-    def query(self, question):
+    def query(self, question, history=None):
         """Query the RAG system."""
         if not self.vector_store:
             self.initialize_vector_store()
@@ -155,12 +155,15 @@ class RAGOllamaApp:
             "{context}"
         )
 
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system_prompt),
-                ("human", "{input}"),
-            ]
-        )
+        messages = [("system", system_prompt)]
+        
+        if history:
+            for role, content in history:
+                messages.append((role, content))
+        
+        messages.append(("human", "{input}"))
+
+        prompt = ChatPromptTemplate.from_messages(messages)
 
         # 4. Create Chain
         question_answer_chain = create_stuff_documents_chain(llm, prompt)
